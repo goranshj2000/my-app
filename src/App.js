@@ -57,16 +57,20 @@ function BasicUsage() {
   };
 
   const handleShareImage = async () => {
-    const newFile = await toBlob(printRef.current);
-    const data = {
-      files: [
-        new File([newFile], "Your badges.png", {
-          type: newFile.type
-        })
-      ],
-      title: "Badges",
-      text: "See these Badges"
-    };
+    // const newFile = await toBlob(printRef.current);
+    // const data = {
+    //   files: [
+    //     new File([newFile], "Your badges.jpg", {
+    //       type: newFile.type
+    //     })
+    //   ],
+    //   title: "Badges",
+    //   text: "See these Badges"
+    // };
+    const element = printRef.current;
+    const canvas = await html2canvas(element);
+
+    const data = canvas.toDataURL('image/jpg');
 
     try {
       if (!navigator.canShare(data)) {
