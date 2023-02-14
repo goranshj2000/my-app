@@ -69,9 +69,9 @@ function BasicUsage() {
     };
 
     try {
-      if (!navigator.canShare(data)) {
-        console.error("Can't share");
-      }
+      // if (!navigator.canShare(data)) {
+      //   console.error("Can't share");
+      // }
       await navigator.share(data);
     } catch (err) {
       console.error(err);
