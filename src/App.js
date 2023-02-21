@@ -1,5 +1,6 @@
 import logo from "./logo.svg";
 import "./App.css";
+import pokemon from "./pokemon.json";
 import html2canvas from "html2canvas";
 import { toBlob } from "html-to-image";
 
@@ -18,8 +19,7 @@ import {
  } from "@chakra-ui/react";
 
 import propTypes from "prop-types";
-import pokemon from "./pokemon.json";
-import { useRef, useState} from "react";
+import { useEffect, useRef, useState} from "react";
 
 //this is a component
 const PokemonRow = ({ pokemon, onSelect }) => (
@@ -31,6 +31,37 @@ const PokemonRow = ({ pokemon, onSelect }) => (
     </td>
   </tr>
 );
+
+const PokemonInfo = ({ name, base}) => (
+  <div>
+    <h1>{name.english}</h1>
+    <table>
+      {
+        Object.keys(base).map(key => 
+          <tr key={key}>
+            <td>{key}</td>
+            <td>{base[key]}</td>
+          </tr>
+          )
+      }
+    </table>
+  </div>
+)
+
+PokemonInfo.propTypes = {
+  name: propTypes.shape({
+    english: propTypes.string,
+  }),
+  id: propTypes.number,
+  base: propTypes.shape({
+    HP: propTypes.number.isRequired,
+    Attack: propTypes.number.isRequired,
+    Defense: propTypes.number.isRequired,
+    "Sp. Attack": propTypes.number.isRequired,
+    "Sp. Defense": propTypes.number.isRequired,
+    Speed: propTypes.number.isRequired,
+  }),
+}
 
 
 function BasicUsage() {
@@ -107,35 +138,17 @@ function BasicUsage() {
     </>
   )
 }
-PokemonRow.propTypes = {
-  pokemon: propTypes.shape({
-    name: propTypes.shape({
-      english: propTypes.string,
-    }),
-    type: propTypes.arrayOf(propTypes.string),
-  }),
-  onSelect: propTypes.func,
-};
-
-const PokemonInfo = ({ name, base}) => (
-  <div>
-    <h1>{name.english}</h1>
-  </div>
-)
-
-PokemonInfo.propTypes = {
-  name: propTypes.shape({
-    english: propTypes.string,
-  }),
-  id: propTypes.number,
-  base: propTypes.shape({
-
-  }),
-}
 
 function App() {
   const [filter, filterSet] = useState("");
+  // const [pokemon, setPokemon] = useState([]);
   const [selectedItem, setSelectedItem] = useState(null);
+  
+  // useEffect(() => {
+  //   fetch('http://localhost:3000/pokemon.json')
+  //   .then((response) => response.json())
+  //   .then((data) => setPokemon(data))
+  //   }, [])
   return (
     <div
       style={{
@@ -144,8 +157,8 @@ function App() {
         paddingTop: "1rem",
       }}
     >
-      <h1 className="title">Pokemon</h1>
-      <BasicUsage>hey</BasicUsage>
+      <h1 className="title">Schmooze Pokemon app -d issue?</h1>
+      <BasicUsage/>
       <Input value={filter} onChange={(evt) => filterSet(evt.target.value)} />
       <div style={{
         display: 'grid',
